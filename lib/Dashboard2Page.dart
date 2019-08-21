@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'LectureSchedulePage.dart';
 import 'RegisterPage.dart';
 
 
@@ -218,6 +219,48 @@ class _Dashboard2Page extends State<Dashboard2Page> {
                           color: Colors.teal,
                         ),
                         title: Text('Attendance',
+                            style:
+                                TextStyle(fontSize: 18.0, color: Colors.black)),
+                        trailing: CircleAvatar(
+                          backgroundColor: Colors.grey.shade300,
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: Color(0xffffc909),
+                          ),
+                        )),
+                  ),
+                ),
+              ),
+            ),
+              Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                elevation: 8.0,
+                child: ClipPath(
+                  clipper: ShapeBorderClipper(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3))),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border(
+                            left: BorderSide(
+                                color: Color(0xffffc909), width: 5))),
+                    child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LectureSchedulePage(),
+                            ),
+                          );
+                        },
+                        contentPadding: EdgeInsets.all(2.0),
+                        leading: Icon(
+                          Icons.apps,
+                          size: 40.0,
+                          color: Colors.teal,
+                        ),
+                        title: Text('Lectures',
                             style:
                                 TextStyle(fontSize: 18.0, color: Colors.black)),
                         trailing: CircleAvatar(

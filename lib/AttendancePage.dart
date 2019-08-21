@@ -239,6 +239,7 @@ class _AttendancePage extends State<AttendancePage> {
      String localDate = f.format(date);
     final uri = 'http://202.66.172.112:4242/sgterp/resources/scheduleList/faculty/?employeeId=$userid&date=$localDate';
 //    var match = {"regNum": _phoneNumberController.text};
+    print(uri);
     var response = await get(Uri.parse(uri),
 //      headers: {
 //        "Accept": "application/json",

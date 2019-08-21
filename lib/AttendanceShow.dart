@@ -16,6 +16,5 @@ class AttendanceShow {
         startTime: json["startTime"],
         scheduleId: json["scheduleId"],
         endTime:  json["endTime"]);
-
   }
 }

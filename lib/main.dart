@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Dashboard2Page.dart';
 
 import 'LecturePage.dart';
+import 'LectureSchedulePage.dart';
 import 'RegisterPage.dart';
 import 'AttendancePage.dart';
 import 'ShowAndTakeAttendancePage.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/lecturePage': (BuildContext context) => new LecturePage(),
         '/attendancePage': (BuildContext context) => new AttendancePage(),
         '/showAndTakeAttendancePage': (BuildContext context) => new ShowAndTakeAttendancePage(),
+        '/lectureSchedulePage': (BuildContext context) => new LectureSchedulePage(),
 
 
     },
