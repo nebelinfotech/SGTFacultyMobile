@@ -232,12 +232,12 @@ class _AttendancePage extends State<AttendancePage> {
   Future<void> callAttendanceApi() async {
 
     Map abc = new Map();
-    final f = new DateFormat('dd/MM/yyyy');
+    final f = new DateFormat('MM/dd/yyyy');
     final f2 = new DateFormat('dd MMMM yyyy');
 
      newDate = f2.format(date);
-     String localDate = f.format(date);
-    final uri = 'http://202.66.172.112:4242/sgterp/resources/scheduleList/faculty/?employeeId=$userid&date=$localDate';
+     String localDate = f.format(DateTime.now());
+    final uri = 'http://202.66.172.112:4242/sgterp/resources/scheduleList/faculty/?employeeId=EMP-161194&date=$localDate';
 //    var match = {"regNum": _phoneNumberController.text};
     print(uri);
     var response = await get(Uri.parse(uri),

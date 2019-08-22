@@ -29,7 +29,6 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
   String mobile;
   String picurl;
   String userid;
-  DateTime date;
   String newDate;
 
 
@@ -85,9 +84,13 @@ mainAxisAlignment: MainAxisAlignment.start,
                         ),
                         Expanded(
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Container(
                                   child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Flexible(
                                         child: Container(
@@ -95,8 +98,7 @@ mainAxisAlignment: MainAxisAlignment.start,
                                             child: Text(
                                               initialAttendance[index]
                                                   .studentName
-                                                  .toUpperCase() +
-                                                  ' |',
+                                                  .toUpperCase(),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.normal,
                                                   fontSize: 12),
@@ -106,8 +108,13 @@ mainAxisAlignment: MainAxisAlignment.start,
 
 
 
-                                         Image.asset(getSwitchValue(index)
-                                        ),
+                                         Flexible(
+                                               child: Container(
+                                                 height: 50,
+                                                 width: 100,
+                                                 child: Image.asset(getSwitchValue(index),
+                                         ),
+                                               )),
 
                                     ],
                                   )),
@@ -162,13 +169,13 @@ mainAxisAlignment: MainAxisAlignment.start,
   }*/
   Future<void> callAttendanceApi() async {
     Map abc = new Map();
-    final f = new DateFormat('dd/MM/yyyy');
+    final f = new DateFormat('MM/dd//yyyy');
     final f2 = new DateFormat('dd MMMM yyyy');
 
 //    newDate = f2.format(date);
-//    String localDate = f.format(date);
+    String localDate = f.format(DateTime.now());
     final uri =
-        'http://202.66.172.112:4242/sgterp/resources/attendanceList/faculty?scheduleId=15013&date=08/05/2019';
+        'http://202.66.172.112:4242/sgterp/resources/attendanceList/faculty?scheduleId=${widget.scheduleId}&date=$localDate';
 //    var match = {"regNum": _phoneNumberController.text};
     var response = await get(
       Uri.parse(uri),
@@ -256,12 +263,12 @@ mainAxisAlignment: MainAxisAlignment.start,
 
   String getSwitchValue(int index) {
     if(initialAttendance[index].presentAbsent == "P"){
-      return 'assets/active.jpg';
+      return 'assets/active.png';
     }else if(initialAttendance[index].presentAbsent == "A"){
-      return 'assets/inactive.jpg';
+      return 'assets/inactive.png';
     }
     else{
-      return 'assets/inactive.jpg';
+      return 'assets/inactive.png';
 
     }
   }

@@ -438,9 +438,9 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
 
     Map abc = new Map();
 
-    final f = new DateFormat('dd/MM/yyyy');
+    final f = new DateFormat('MM/dd/yyyy');
     String localDate = f.format(dateTime);
-    final uri = 'http://202.66.172.112:4242/sgterp/resources/scheduleList/faculty/?employeeId=150290&date=$localDate';
+    final uri = 'http://202.66.172.112:4242/sgterp/resources/scheduleList/faculty/?employeeId=EMP-161194&date=$localDate';
     print(uri);
     var response = await get(Uri.parse(uri),
     );
