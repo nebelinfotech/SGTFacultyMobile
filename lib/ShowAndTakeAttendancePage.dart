@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'Attendance.dart';
+import 'AttendanceTake.dart';
 
 class ShowAndTakeAttendancePage extends StatefulWidget {
   final String scheduleId;
@@ -21,7 +22,7 @@ class ShowAndTakeAttendancePage extends StatefulWidget {
 class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
   Future<SharedPreferences> _sprefs = SharedPreferences.getInstance();
   String userId;
-  List<Attendance> initialAttendance;
+  List<AttendanceTake> initialAttendance;
   SharedPreferences sharedPreferences;
 
   String username;
@@ -31,12 +32,18 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
   DateTime date;
   String newDate;
 
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     getProfileData();
+
+
+
+
   }
 
   Color getColor(int selector) {
@@ -67,54 +74,54 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
                               BorderSide(color: Color(0xffffc909), width: 5))),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Column(
+                    child: Row(
+mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(
-                            child: Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: Container(
-                                  padding: EdgeInsets.only(left: 6),
-                                  child: Text(
-                                    initialAttendance[index]
-                                            .subjectName
-                                            .toUpperCase() +
-                                        ' |',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12),
-                                    overflow: TextOverflow.ellipsis,
-                                  )),
-                            ),
-                           
-                            CircleAvatar(
-                              radius: 15,
-                              backgroundColor: Colors.grey.shade300,
-                              child: Icon(
-                                Icons.arrow_forward,
-                                color: Color(0xffffc909),
-                              ),
-                            )
-                          ],
-                        )),
-                        Container(
-                            child: Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: Container(
-                                  padding: EdgeInsets.only(left: 6),
-                                  child: Text(
-                                    "TIME :",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12),
-                                    overflow: TextOverflow.ellipsis,
-                                  )),
-                            ),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage("http://202.66.172.112:4242/sgterp/public/studentReg_images/181902007/Pic_SGT188207766.jpg"),
+                          radius: 30,
+                          backgroundColor: Colors.transparent,
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Flexible(
+                                        child: Container(
+                                            padding: EdgeInsets.only(left: 6),
+                                            child: Text(
+                                              initialAttendance[index]
+                                                  .studentName
+                                                  .toUpperCase() +
+                                                  ' |',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 12),
+                                              overflow: TextOverflow.ellipsis,
+                                            )),
+                                      ),
 
-                          ],
-                        )),
+
+
+                                         Image.asset(getSwitchValue(index)
+                                        ),
+
+                                    ],
+                                  )),
+
+                            ],
+                          ),
+                        ),
+
+
+
+
                       ],
+
+
                     ),
                   ),
                 ),
@@ -158,10 +165,10 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
     final f = new DateFormat('dd/MM/yyyy');
     final f2 = new DateFormat('dd MMMM yyyy');
 
-    newDate = f2.format(date);
-    String localDate = f.format(date);
+//    newDate = f2.format(date);
+//    String localDate = f.format(date);
     final uri =
-        'http://202.66.172.112:4242/sgterp/resources/attendanceList/faculty?scheduleId=${widget.scheduleId}&date=$date';
+        'http://202.66.172.112:4242/sgterp/resources/attendanceList/faculty?scheduleId=15013&date=08/05/2019';
 //    var match = {"regNum": _phoneNumberController.text};
     var response = await get(
       Uri.parse(uri),
@@ -171,7 +178,6 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
 //      },
     );
 
-    print(response);
     print(response.body);
 
     abc = json.decode(response.body) as Map;
@@ -179,12 +185,14 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
 
     if (!abc['error']) {
       setState(() {
-        var rest = abc['data'] as List;
+        var rest = abc['studentList'] as List;
         initialAttendance =
-            rest.map<Attendance>((json) => Attendance.fromJson(json)).toList();
+            rest.map<AttendanceTake>((json) => AttendanceTake.fromJson(json)).toList();
 
-//        print(initialFees);
+        print(initialAttendance.length);
       });
+//      print('${initialAttendance[21].picUrl}');
+
     } else {
 //    Scaffold.of(context).showSnackBar(new SnackBar(
 //      content: new Text(abc['message']),
@@ -237,6 +245,24 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
       userid = userid;
       mobile = mobile;
     });
+
+
+
+
+
+
     callAttendanceApi();
+  }
+
+  String getSwitchValue(int index) {
+    if(initialAttendance[index].presentAbsent == "P"){
+      return 'assets/active.jpg';
+    }else if(initialAttendance[index].presentAbsent == "A"){
+      return 'assets/inactive.jpg';
+    }
+    else{
+      return 'assets/inactive.jpg';
+
+    }
   }
 }

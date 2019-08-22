@@ -41,12 +41,39 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
   Color _color6 = Colors.white;
   BorderRadiusGeometry _borderRadius = BorderRadius.circular(5);
 
+  DateTime _day0;
+  DateTime _day1;
+  DateTime _day2;
+  DateTime _day3;
+  DateTime _day4;
+  DateTime _day5;
+  DateTime _day6;
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    var monday=1;
+    var now = new DateTime.now();
 
-    getProfileData();
+    while(now.weekday!=monday)
+    {
+      now=now.subtract(new Duration(days: 1));
+    }
+    var formatter = new DateFormat('yyyy-MM-dd');
+    var formatted = formatter.format(now);
+
+//    int abc = formatted.replaceAll('"', '\\"') as int;
+    _day0 = DateTime.parse(formatted);
+    _day1 = _day0.toUtc().add(new Duration(days: 1)).toLocal();
+    _day2 = _day1.toUtc().add(new Duration(days: 1)).toLocal();
+    _day3 = _day2.toUtc().add(new Duration(days: 1)).toLocal();
+    _day4 = _day3.toUtc().add(new Duration(days: 1)).toLocal();
+    _day5 = _day4.toUtc().add(new Duration(days: 1)).toLocal();
+    _day5 = _day5.toUtc().add(new Duration(days: 1)).toLocal();
+
+    getProfileData(_day0);
 
 
 
@@ -177,6 +204,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "mon";
+                          callAttendanceApi(_day0);
                           setState(() {
 
 
@@ -210,6 +238,8 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "tue";
+                          callAttendanceApi(_day1);
+
                           setState(() {
                             _color1 = Colors.white;
                             _color2 = Colors.amber[400];
@@ -239,6 +269,8 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "wed";
+                          callAttendanceApi(_day2);
+
                           setState(() {
                             _color1 = Colors.white;
                             _color2 = Colors.white;
@@ -268,6 +300,8 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "thu";
+                          callAttendanceApi(_day3);
+
                           setState(() {
                             _color1 = Colors.white;
                             _color2 = Colors.white;
@@ -298,6 +332,8 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "fri";
+                          callAttendanceApi(_day4);
+
                           setState(() {
                             _color1 = Colors.white;
                             _color2 = Colors.white;
@@ -326,6 +362,8 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "sat";
+                          callAttendanceApi(_day5);
+
                           setState(() {
                             _color1 = Colors.white;
                             _color2 = Colors.white;
@@ -396,46 +434,31 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
 
 
   }*/
-  Future<void> callAttendanceApi() async {
+  Future<void> callAttendanceApi(DateTime dateTime) async {
 
     Map abc = new Map();
+
     final f = new DateFormat('dd/MM/yyyy');
-    final f2 = new DateFormat('dd MMMM yyyy');
-//
-//    newDate = f2.format(DateTime.now());
-//    String localDate = f.format(newDate);
-    final uri = 'http://202.66.172.112:4242/sgterp/resources/scheduleList/faculty/?employeeId=$userid&date=08/05/2019';
-//    var match = {"regNum": _phoneNumberController.text};
+    String localDate = f.format(dateTime);
+    final uri = 'http://202.66.172.112:4242/sgterp/resources/scheduleList/faculty/?employeeId=150290&date=$localDate';
     print(uri);
     var response = await get(Uri.parse(uri),
-//      headers: {
-//        "Accept": "application/json",
-//        "Content-Type": "application/x-www-form-urlencoded"
-//      },
     );
-
-    print(response);
-    print(response.body);
-
     abc = json.decode(response.body) as Map;
-//    print(abc['details']);
 
     if (!abc['error']) {
 
       setState(() {
 
         var rest   = abc['data'] as List;
+
         initialAttendance = rest.map<AttendanceShow>((json)=>AttendanceShow.fromJson(json)).toList();
 
-//        print(initialFees);
       });
 
     } else {
-//    Scaffold.of(context).showSnackBar(new SnackBar(
-//      content: new Text(abc['message']),
       _ackAlert(context);
 
-//    ));
     }
 
 
@@ -469,7 +492,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
     );
 
   }
-  getProfileData() async {
+  getProfileData(DateTime dateTime) async {
     final SharedPreferences prefs = await _sprefs;
     username = prefs.getString("name") ?? 'No Data Found';
     picurl = prefs.getString("profile-picture") ?? 'name';
@@ -484,7 +507,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
       userid = userid;
       mobile = mobile;
     });
-    callAttendanceApi();
+    callAttendanceApi(dateTime);
 
   }
 
