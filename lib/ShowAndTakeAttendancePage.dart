@@ -12,7 +12,9 @@ import 'AttendanceTake.dart';
 class ShowAndTakeAttendancePage extends StatefulWidget {
   final String scheduleId;
   final String date;
-  ShowAndTakeAttendancePage({Key key, @required this.scheduleId,@required this.date})
+
+  ShowAndTakeAttendancePage(
+      {Key key, @required this.scheduleId, @required this.date})
       : super(key: key);
 
   @override
@@ -31,18 +33,12 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
   String userid;
   String newDate;
 
-
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     getProfileData();
-
-
-
-
   }
 
   Color getColor(int selector) {
@@ -74,61 +70,84 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         CircleAvatar(
-                          backgroundImage: NetworkImage("http://202.66.172.112:4242/sgterp/public/studentReg_images/181902007/Pic_SGT188207766.jpg"),
+                          backgroundImage: NetworkImage(
+                              "http://202.66.172.112:4242/sgterp/public/studentReg_images/181902007/Pic_SGT188207766.jpg"),
                           radius: 30,
                           backgroundColor: Colors.transparent,
                         ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Flexible(
-                                        child: Container(
-                                            padding: EdgeInsets.only(left: 6),
-                                            child: Text(
-                                              initialAttendance[index]
-                                                  .studentName
-                                                  .toUpperCase(),
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize: 12),
-                                              overflow: TextOverflow.ellipsis,
-                                            )),
-                                      ),
-
-
-
-                                         Flexible(
-                                               child: Container(
-                                                 height: 50,
-                                                 width: 100,
-                                                 child: Image.asset(getSwitchValue(index),
-                                         ),
-                                               )),
-
-                                    ],
+                        SizedBox(width: 10,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              child: Container(
+                                  padding: EdgeInsets.only(left: 6),
+                                  child: Text(
+                                    initialAttendance[index]
+                                        .studentName
+                                        .toUpperCase(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12),
+                                    overflow: TextOverflow.ellipsis,
                                   )),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Container(
+                                      padding: EdgeInsets.only(left: 6),
+                                      child: Text(
+                                        'REG:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                        overflow: TextOverflow.ellipsis,
+                                      )),
+                                ),Container(
+                                  child: Container(
+                                      padding: EdgeInsets.only(left: 6),
+                                      child: Text(
+                                        initialAttendance[index]
+                                            .regNum
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 12),
+                                        overflow: TextOverflow.ellipsis,
+                                      )),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Flexible(
+                            child: Align(alignment: Alignment.centerRight,
+                              child: Container(
+                          height: 50,
+                          width: 100,
+                          child: GestureDetector(
+                            onTap: (){
+                              if(getSwitchValue(index)=="assets/active.png"){
+                                initialAttendance[index].presentAbsent = "A";
+                              }else{
+                                initialAttendance[index].presentAbsent = "P";
 
-                            ],
+                              }
+                              setState(() {
+
+                              });
+                            },
+                            child: Image.asset(
+                                getSwitchValue(index),
+                            ),
                           ),
                         ),
-
-
-
-
+                            )),
                       ],
-
-
                     ),
                   ),
                 ),
@@ -147,9 +166,39 @@ mainAxisAlignment: MainAxisAlignment.start,
         backgroundColor: Color(0xff007ba4),
         title: Text('Attendance'),
       ),
-      body: Center(
-        child: _myListView(context),
-      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(child: _myListView(context)),
+          SizedBox(height: 10,),
+          GestureDetector(
+            onTap: (){
+//              submitAttendance();
+              _submitAttendanceAlert(context);
+            },
+            child: Container(
+              height: 50,
+              color: Colors.grey.shade400,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text('Submit Attendance',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.bold,fontSize: 25),),
+              CircleAvatar(
+              backgroundColor: Colors.grey.shade300,
+              child: Icon(
+                Icons.arrow_forward,
+                color: Color(0xffffc909),
+              ),
+            )
+                ],
+              ),
+            ),
+          ),
+
+
+
+        ],
+         ),
     );
     // Material(child: _myListView(context));
   }
@@ -193,16 +242,14 @@ mainAxisAlignment: MainAxisAlignment.start,
     if (!abc['error']) {
       setState(() {
         var rest = abc['studentList'] as List;
-        initialAttendance =
-            rest.map<AttendanceTake>((json) => AttendanceTake.fromJson(json)).toList();
+        initialAttendance = rest
+            .map<AttendanceTake>((json) => AttendanceTake.fromJson(json))
+            .toList();
 
         print(initialAttendance.length);
       });
-//      print('${initialAttendance[21].picUrl}');
 
     } else {
-//    Scaffold.of(context).showSnackBar(new SnackBar(
-//      content: new Text(abc['message']),
       _ackAlert(context);
 
 //    ));
@@ -236,6 +283,46 @@ mainAxisAlignment: MainAxisAlignment.start,
       },
     );
   }
+  Future<void> _submitAttendanceAlert(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Do You Want to Submit the Attendance ?',
+            style: TextStyle(
+                color: Colors.indigo, fontSize: 18, fontWeight: FontWeight.bold),textAlign: TextAlign.center,
+          ),
+          content: Container(
+            height: 35,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  FlatButton(
+                    child: Icon(Icons.cancel,color: Colors.red,),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+
+                    child: Icon(Icons.arrow_forward,color: Color(0xffffc909,),),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      submitAttendance();
+                    },
+                  ),
+                ],
+              ),
+              ),
+          ),
+
+        );
+      },
+    );
+  }
 
   getProfileData() async {
     final SharedPreferences prefs = await _sprefs;
@@ -253,23 +340,55 @@ mainAxisAlignment: MainAxisAlignment.start,
       mobile = mobile;
     });
 
-
-
-
-
-
     callAttendanceApi();
   }
 
   String getSwitchValue(int index) {
-    if(initialAttendance[index].presentAbsent == "P"){
+    if (initialAttendance[index].presentAbsent == "P") {
       return 'assets/active.png';
-    }else if(initialAttendance[index].presentAbsent == "A"){
+    } else if (initialAttendance[index].presentAbsent == "A") {
       return 'assets/inactive.png';
-    }
-    else{
+    } else {
       return 'assets/inactive.png';
-
     }
   }
+
+  Future<void>  submitAttendance() async {
+    Map abc = new Map();
+    final f = new DateFormat('MM/dd//yyyy');
+    final f2 = new DateFormat('dd MMMM yyyy');
+
+    List<String> sd = new List();
+    for(int i=0;i<initialAttendance.length;i++){
+      if(initialAttendance[i].presentAbsent == "A"){
+        sd.add(initialAttendance[i].regNum);
+
+      }
+    }
+    String s = '';
+    print(sd);
+    s = sd.join(',');
+
+    String localDate = f.format(DateTime.now());
+    final uri =
+        'http://202.66.172.112:4242/sgterp/resources/markAttendance/faculty?scheduleId=${widget.scheduleId}&attendanceDate=$localDate&employeeId=admin&regNum=$s';
+//    var match = {"regNum": _phoneNumberController.text};
+    var response = await post(
+      Uri.parse(uri)
+    );
+
+    print(response.body);
+    abc = json.decode(response.body) as Map;
+
+    if (!abc['error']) {
+
+      Navigator.pop(context);
+    } else {
+      _ackAlert(context);
+
+//    ));
+    }
+
+  }
+
 }

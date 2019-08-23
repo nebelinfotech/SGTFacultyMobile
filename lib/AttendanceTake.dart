@@ -1,8 +1,12 @@
+
+import 'package:json_annotation/json_annotation.dart';
+
+
 class AttendanceTake {
-  final String studentName;
-  final String regNum;
-  final String presentAbsent;
-  final String picUrl;
+   String studentName;
+   String regNum;
+   String presentAbsent;
+   String picUrl;
 
   // All dogs start out at 10, because they're good dogs.
 
@@ -16,4 +20,13 @@ class AttendanceTake {
         regNum:  json["studentId"]);
 
   }
+  Map<String, dynamic> toJson() => _attendanceToJson(this);
+
+
+Map<String, dynamic> _attendanceToJson(AttendanceTake instance) => <String, dynamic>{
+  'name': instance.studentName,
+  'picPath': instance.picUrl,
+  'status': instance.presentAbsent,
+  'studentId': instance.regNum,
+};
 }

@@ -98,12 +98,12 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ShowAndTakeAttendancePage(scheduleId: initialAttendance[index].scheduleId, date: newDate),
-                ),
-              );
+//              Navigator.push(
+//                context,
+//                MaterialPageRoute(
+//                  builder: (context) => ShowAndTakeAttendancePage(scheduleId: initialAttendance[index].scheduleId, date: newDate),
+//                ),
+//              );
             },
             child: Card(
 
