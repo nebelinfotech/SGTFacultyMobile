@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'Attendance.dart';
 import 'AttendanceShow.dart';
+import 'Constants.dart';
 import 'ShowAndTakeAttendancePage.dart';
 
 class AttendancePage extends StatefulWidget {
@@ -28,7 +29,7 @@ class _AttendancePage extends State<AttendancePage> {
   String mobile;
   String picurl;
   String userid;
-  DateTime date;
+  DateTime dateget;
   String newDate;
 
   @override
@@ -54,7 +55,7 @@ class _AttendancePage extends State<AttendancePage> {
 
   @override
   Widget build(BuildContext context) {
-    date = widget.date;
+    dateget = widget.date;
     Widget _myListView(BuildContext context) {
       return ListView.separated(
         itemCount:initialAttendance == null ? 0 : initialAttendance.length,
@@ -85,6 +86,8 @@ class _AttendancePage extends State<AttendancePage> {
                       children: <Widget>[
                         Container(
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Flexible(
                                 child: Container(
@@ -194,7 +197,7 @@ class _AttendancePage extends State<AttendancePage> {
             child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: Center(
-                child: Text(newDate,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                child: Text('${widget.date}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
               ),
             ),
           ),
@@ -235,9 +238,9 @@ class _AttendancePage extends State<AttendancePage> {
     final f = new DateFormat('MM/dd/yyyy');
     final f2 = new DateFormat('dd MMMM yyyy');
 
-     newDate = f2.format(date);
-     String localDate = f.format(DateTime.now());
-    final uri = 'http://202.66.172.112:4242/sgterp/resources/scheduleList/faculty/?employeeId=EMP-161194&date=$localDate';
+     DateTime lovcation = DateTime.parse(dateget.toIso8601String());
+     String localDate = f.format(lovcation);
+    final uri = '${Constants.url}/scheduleList/faculty/?employeeId=$userid&date=$localDate';
 //    var match = {"regNum": _phoneNumberController.text};
     print(uri);
     var response = await get(Uri.parse(uri),

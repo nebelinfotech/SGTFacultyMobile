@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'Attendance.dart';
 import 'AttendanceShow.dart';
+import 'Constants.dart';
 import 'ShowAndTakeAttendancePage.dart';
 
 class LectureSchedulePage extends StatefulWidget {
@@ -126,19 +127,25 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                                 Flexible(
                                   child: Container(
                                       padding: EdgeInsets.only(left: 6),
-                                      child: Text(initialAttendance[index].subjectName.toUpperCase() +' |',style: TextStyle(fontWeight: FontWeight.normal,fontSize: 12),overflow: TextOverflow.ellipsis,)),
+                                      child: Text(initialAttendance[index].subjectName.toUpperCase(),style: TextStyle(fontWeight: FontWeight.normal,fontSize: 12),overflow: TextOverflow.ellipsis,)),
                                 ),
                                 Flexible(
                                   child: Container(
                                       padding: EdgeInsets.only(left: 6),
                                       child: Text(initialAttendance[index].course.toUpperCase(),style: TextStyle(fontWeight: FontWeight.normal,fontSize: 12),overflow: TextOverflow.ellipsis,)),
                                 ),
-                                CircleAvatar(
-                                  radius: 15,
-                                  backgroundColor: Colors.grey.shade300,
-                                  child: Icon(
-                                    Icons.arrow_forward,
-                                    color: Color(0xffffc909),
+                                Flexible(
+
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: Colors.grey.shade300,
+                                      child: Icon(
+                                        Icons.arrow_forward,
+                                        color: Color(0xffffc909),
+                                      ),
+                                    ),
                                   ),
                                 )
                               ],
@@ -181,7 +188,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff007ba4),
-        title: Text('Attendance'),
+        title: Text('Lectures in Week'),
       ),
       body: Column(
 
@@ -440,7 +447,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
 
     final f = new DateFormat('MM/dd/yyyy');
     String localDate = f.format(dateTime);
-    final uri = 'http://202.66.172.112:4242/sgterp/resources/scheduleList/faculty/?employeeId=EMP-161194&date=$localDate';
+    final uri = '${Constants.url}/scheduleList/faculty/?employeeId=$userId&date=$localDate';
     print(uri);
     var response = await get(Uri.parse(uri),
     );

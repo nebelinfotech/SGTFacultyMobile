@@ -91,9 +91,43 @@ class _Dashboard2Page extends State<Dashboard2Page> {
                                   color: Color(0xffffc909), width: 5))),
                       child: ListTile(
                           onTap: () {
-                            Navigator.pushNamed(context, '/lecturePage');
+                            Navigator.pushNamed(context, '/attendancePage');
                           },
                           title: Text("Attendance"),
+                          leading: Icon(
+                            Icons.apps,
+                            color: Color(0xff009999),
+                          ),
+                          trailing: CircleAvatar(
+                            backgroundColor: Colors.grey.shade300,
+                            child: Icon(
+                              Icons.arrow_forward,
+                              color: Color(0xffffc909),
+                            ),
+                          )
+                      ),
+                    ),
+                  ),
+                ),
+              )  ,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 8.0,
+                  child: ClipPath(
+                    clipper: ShapeBorderClipper(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3))),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border(
+                              left: BorderSide(
+                                  color: Color(0xffffc909), width: 5))),
+                      child: ListTile(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/lecturePage');
+                          },
+                          title: Text("Lectures"),
                           leading: Icon(
                             Icons.apps,
                             color: Color(0xff009999),
