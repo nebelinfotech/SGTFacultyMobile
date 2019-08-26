@@ -13,6 +13,7 @@ import 'ShowAndTakeAttendancePage.dart';
 
 class LectureSchedulePage extends StatefulWidget {
   final DateTime date;
+
   LectureSchedulePage({Key key, @required this.date}) : super(key: key);
 
   @override
@@ -22,7 +23,8 @@ class LectureSchedulePage extends StatefulWidget {
 class _LectureSchedulePage extends State<LectureSchedulePage> {
   Future<SharedPreferences> _sprefs = SharedPreferences.getInstance();
   String userId;
-  List<AttendanceShow> initialAttendance ;
+  List<AttendanceShow> initialAttendance;
+
   SharedPreferences sharedPreferences;
 
   String username;
@@ -51,17 +53,15 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
   DateTime _day6;
   String dateHeader;
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    var monday=1;
+    var monday = 1;
     var now = new DateTime.now();
 
-    while(now.weekday!=monday)
-    {
-      now=now.subtract(new Duration(days: 1));
+    while (now.weekday != monday) {
+      now = now.subtract(new Duration(days: 1));
     }
     var formatter = new DateFormat('yyyy-MM-dd');
     var formatted = formatter.format(now);
@@ -76,12 +76,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
     _day5 = _day5.toUtc().add(new Duration(days: 1)).toLocal();
 
     getProfileData(_day0);
-
-
-
   }
-
-
 
   Color getColor(int selector) {
     if (selector % 2 == 0) {
@@ -96,10 +91,10 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
     date = widget.date;
     Widget _myListView(BuildContext context) {
       return ListView.separated(
-        itemCount:initialAttendance == null ? 0 : initialAttendance.length,
+        itemCount: initialAttendance == null ? 0 : initialAttendance.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: (){
+            onTap: () {
 //              Navigator.push(
 //                context,
 //                MaterialPageRoute(
@@ -108,17 +103,17 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
 //              );
             },
             child: Card(
-
               elevation: 8.0,
               child: ClipPath(
-                clipper: ShapeBorderClipper(shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(3))),
-
+                clipper: ShapeBorderClipper(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3))),
                 child: Container(
                   decoration: BoxDecoration(
-                      border: Border(left: BorderSide(color: Color(0xffffc909), width: 5))),
+                      border: Border(
+                          left:
+                              BorderSide(color: Color(0xffffc909), width: 5))),
                   child: Padding(
-
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: <Widget>[
@@ -126,64 +121,104 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                           alignment: Alignment.centerLeft,
                           child: Container(
                               padding: EdgeInsets.only(left: 6),
-                              child: Text(initialAttendance[index].subjectName.toUpperCase(),style: TextStyle(fontWeight: FontWeight.normal,fontSize: 12),overflow: TextOverflow.ellipsis,)),
+                              child: Text(
+                                initialAttendance[index]
+                                    .subjectName
+                                    .toUpperCase(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                              )),
                         ),
                         Container(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Flexible(
+                              child: Container(
+                                  padding: EdgeInsets.only(left: 6),
+                                  child: Text(
+                                    initialAttendance[index]
+                                        .course
+                                        .toUpperCase(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12),
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                              flex: 5,
+                            ),
 
-                                Flexible(
-                                  child: Container(
-                                      padding: EdgeInsets.only(left: 6),
-                                      child: Text(initialAttendance[index].course.toUpperCase(),style: TextStyle(fontWeight: FontWeight.normal,fontSize: 12),overflow: TextOverflow.ellipsis,)),
-
-                                  flex: 5,
-                                ),
-                                  Flexible(
-                                    child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: CircleAvatar(
-                                            radius: 15,
-                                            backgroundColor: Colors.grey.shade300,
-                                            child: Icon(
-                                              Icons.arrow_forward,
-                                              color: Color(0xffffc909),
-                                            ),
-                                          ),
-                                        ),
-                                    flex: 1,
-                                  ),
-
-
-
-                              ],
-                            )
-                        ),
-
-
+                          ],
+                        )),
                         Container(
                             child: Row(
-                              children: <Widget>[
-                                Flexible(
-                                  child: Container(
-                                      padding: EdgeInsets.only(left: 6),
-                                      child: Text("TIME :"
-                                        ,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 12),overflow: TextOverflow.ellipsis,)),
-                                ),
-                                Flexible(
-                                  child: Container(
-                                      padding: EdgeInsets.only(left: 6),
-                                      child: Text(initialAttendance[index].startTime.toUpperCase() + ' TO ' + initialAttendance[index].endTime.toUpperCase()
-                                        ,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),overflow: TextOverflow.ellipsis,)),
-                                ),
-
-
-                              ],
-                            )
+                          children: <Widget>[
+                            Flexible(
+                              child: Container(
+                                  padding: EdgeInsets.only(left: 6),
+                                  child: Text(
+                                    "TIME :",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12),
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                            ),
+                            Flexible(
+                              child: Container(
+                                  padding: EdgeInsets.only(left: 6),
+                                  child: Text(
+                                    initialAttendance[index]
+                                            .startTime
+                                            .toUpperCase() +
+                                        ' TO ' +
+                                        initialAttendance[index]
+                                            .endTime
+                                            .toUpperCase(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12),
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                            ),
+                          ],
+                        )),
+                        Container(
+                            child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: Container(
+                                  padding: EdgeInsets.only(left: 6),
+                                  child: Text(
+                                    "SEMESTER | BATCH:",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12),
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                            ),
+                            Flexible(
+                              child: Container(
+                                  padding: EdgeInsets.only(left: 6),
+                                  child: Text(
+                                    initialAttendance[index]
+                                            .semester
+                                            .toUpperCase() +
+                                        ' | ' +
+                                        'BATCH '+initialAttendance[index]
+                                            .batch
+                                            .toUpperCase(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12),
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                            ),
+                          ],
+                        )
                         ),
-
-
                       ],
                     ),
                   ),
@@ -197,18 +232,17 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
         },
       );
     }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff007ba4),
         title: Text('Lectures in Week'),
       ),
       body: Column(
-
         children: <Widget>[
           Container(
             height: 50,
-            child:  Padding(
-
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 height: 50,
@@ -216,17 +250,12 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-
                     Flexible(
-
-
                       child: GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           selectedday = "mon";
-                          callAttendanceApi(_day0,userid);
+                          callAttendanceApi(_day0, userid);
                           setState(() {
-
-
                             _color1 = Colors.amber[400];
                             _color2 = Colors.white;
                             _color3 = Colors.white;
@@ -235,7 +264,6 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                             _color6 = Colors.white;
 
                             // Generate a random border radius.
-
                           });
                         },
                         child: AnimatedContainer(
@@ -248,16 +276,19 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                           // Provide an optional curve to make the animation feel smoother.
 
                           padding: EdgeInsets.all(5),
-                          child: Text("Mon",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                          child: Text(
+                            "Mon",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                       ),
-                    ),Flexible(
-
-
+                    ),
+                    Flexible(
                       child: GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           selectedday = "tue";
-                          callAttendanceApi(_day1,userid);
+                          callAttendanceApi(_day1, userid);
 
                           setState(() {
                             _color1 = Colors.white;
@@ -266,12 +297,9 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                             _color4 = Colors.white;
                             _color5 = Colors.white;
                             _color6 = Colors.white;
-
-
                           });
                         },
                         child: AnimatedContainer(
-
                           decoration: BoxDecoration(
                             color: _color2,
                             borderRadius: _borderRadius,
@@ -281,14 +309,19 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                           // Provide an optional curve to make the animation feel smoother.
 
                           padding: EdgeInsets.all(5),
-                          child: Text("Tue",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                          child: Text(
+                            "Tue",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                       ),
-                    ),Flexible(
+                    ),
+                    Flexible(
                       child: GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           selectedday = "wed";
-                          callAttendanceApi(_day2,userid);
+                          callAttendanceApi(_day2, userid);
 
                           setState(() {
                             _color1 = Colors.white;
@@ -297,11 +330,9 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                             _color4 = Colors.white;
                             _color5 = Colors.white;
                             _color6 = Colors.white;
-
                           });
                         },
                         child: AnimatedContainer(
-
                           decoration: BoxDecoration(
                             color: _color3,
                             borderRadius: _borderRadius,
@@ -311,15 +342,19 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                           // Provide an optional curve to make the animation feel smoother.
 
                           padding: EdgeInsets.all(5),
-                          child: Text("Wed",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                          child: Text(
+                            "Wed",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                       ),
-                    ),Flexible(
-
+                    ),
+                    Flexible(
                       child: GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           selectedday = "thu";
-                          callAttendanceApi(_day3,userid);
+                          callAttendanceApi(_day3, userid);
 
                           setState(() {
                             _color1 = Colors.white;
@@ -328,11 +363,9 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                             _color4 = Colors.amber[400];
                             _color5 = Colors.white;
                             _color6 = Colors.white;
-
                           });
                         },
                         child: AnimatedContainer(
-
                           decoration: BoxDecoration(
                             color: _color4,
                             borderRadius: _borderRadius,
@@ -342,16 +375,19 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                           // Provide an optional curve to make the animation feel smoother.
 
                           padding: EdgeInsets.all(5),
-                          child: Text("Thu",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                          child: Text(
+                            "Thu",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                       ),
-                    ),Flexible(
-
-
+                    ),
+                    Flexible(
                       child: GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           selectedday = "fri";
-                          callAttendanceApi(_day4,userid);
+                          callAttendanceApi(_day4, userid);
 
                           setState(() {
                             _color1 = Colors.white;
@@ -360,7 +396,6 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                             _color4 = Colors.white;
                             _color5 = Colors.amber[400];
                             _color6 = Colors.white;
-
                           });
                         },
                         child: AnimatedContainer(
@@ -373,15 +408,19 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                           // Provide an optional curve to make the animation feel smoother.
 
                           padding: EdgeInsets.all(5),
-                          child: Text("Fri",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                          child: Text(
+                            "Fri",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                       ),
-                    ),Flexible(
-
+                    ),
+                    Flexible(
                       child: GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           selectedday = "sat";
-                          callAttendanceApi(_day5,userid);
+                          callAttendanceApi(_day5, userid);
 
                           setState(() {
                             _color1 = Colors.white;
@@ -402,7 +441,11 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                           // Provide an optional curve to make the animation feel smoother.
 
                           padding: EdgeInsets.all(5),
-                          child: Text("Sat",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                          child: Text(
+                            "Sat",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                       ),
                     ),
@@ -411,34 +454,30 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
               ),
             ),
           ),
-          Container
-            (
+          Container(
             color: Color(0xff007ba4),
             height: 25,
             child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: Center(
-                child: Text("$dateHeader",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                child: Text(
+                  "$dateHeader",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),
           Expanded(
             child: Center(
               child: _myListView(context),
-
             ),
           )
-
-
         ],
-
-
       ),
     );
     // Material(child: _myListView(context));
-
   }
-
 
 /*  getProfileData() async {
 
@@ -464,62 +503,56 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
 
     final f = new DateFormat('MM/dd/yyyy');
     String localDate = f.format(dateTime);
-    final uri = '${Constants.url}/scheduleList/faculty/?employeeId=$uID&date=$localDate';
+    final uri =
+        '${Constants.url}/scheduleList/faculty/?employeeId=$uID&date=$localDate';
     print(uri);
-    var response = await get(Uri.parse(uri),
+    var response = await get(
+      Uri.parse(uri),
     );
     abc = json.decode(response.body) as Map;
 
     if (!abc['error']) {
-
       setState(() {
+        var rest = abc['data'] as List;
 
-        var rest   = abc['data'] as List;
-
-        initialAttendance = rest.map<AttendanceShow>((json)=>AttendanceShow.fromJson(json)).toList();
-
+        initialAttendance = rest
+            .map<AttendanceShow>((json) => AttendanceShow.fromJson(json))
+            .toList();
       });
-
     } else {
       _ackAlert(context);
-
     }
 
-
-
-
-    this.setState(() {
-
-    });
-
-
+    this.setState(() {});
   }
+
   Future<void> _ackAlert(BuildContext context) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('No Data Found',style: TextStyle(color: Colors.red,fontSize: 18, fontWeight: FontWeight.bold),),
-          content: const Text('There is no data related to this registration number'),
+          title: Text(
+            'No Data Found',
+            style: TextStyle(
+                color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          content: const Text(
+              'There is no data related to this registration number'),
           actions: <Widget>[
             FlatButton(
               child: Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
-
               },
             ),
           ],
         );
       },
     );
-
   }
+
   getProfileData(DateTime dateTime) async {
-
-
-
     final SharedPreferences prefs = await _sprefs;
     username = prefs.getString("name") ?? 'No Data Found';
     picurl = prefs.getString("profile-picture") ?? 'name';
@@ -534,9 +567,6 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
       userid = userid;
       mobile = mobile;
     });
-    callAttendanceApi(dateTime,userid);
-
+    callAttendanceApi(dateTime, userid);
   }
-
-
 }

@@ -137,6 +137,40 @@ class _AttendancePage extends State<AttendancePage> {
                               ],
                             )
                         ),
+                        Container(
+                            child: Row(
+                              children: <Widget>[
+                                Flexible(
+                                  child: Container(
+                                      padding: EdgeInsets.only(left: 6),
+                                      child: Text(
+                                        "SEMESTER | BATCH:",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 12),
+                                        overflow: TextOverflow.ellipsis,
+                                      )),
+                                ),
+                                Flexible(
+                                  child: Container(
+                                      padding: EdgeInsets.only(left: 6),
+                                      child: Text(
+                                        initialAttendance[index]
+                                            .semester
+                                            .toUpperCase() +
+                                            ' | ' +
+                                            'BATCH '+initialAttendance[index]
+                                            .batch
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
+                                        overflow: TextOverflow.ellipsis,
+                                      )),
+                                ),
+                              ],
+                            )
+                        ),
 
                       ],
                     ),
