@@ -90,7 +90,7 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
                       children: <Widget>[
                         CircleAvatar(
                           backgroundImage: NetworkImage(
-                            "http://202.66.172.112:8080/sgterp/${initialAttendance[index].picUrl}",
+                            "http://202.66.172.112:8080${initialAttendance[index].picUrl}",
                           ),
                           radius: 30,
                           backgroundColor: Colors.transparent,
