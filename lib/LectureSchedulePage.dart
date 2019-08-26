@@ -49,6 +49,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
   DateTime _day4;
   DateTime _day5;
   DateTime _day6;
+  String dateHeader;
 
 
   @override
@@ -121,36 +122,46 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: <Widget>[
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                              padding: EdgeInsets.only(left: 6),
+                              child: Text(initialAttendance[index].subjectName.toUpperCase(),style: TextStyle(fontWeight: FontWeight.normal,fontSize: 12),overflow: TextOverflow.ellipsis,)),
+                        ),
                         Container(
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Flexible(
-                                  child: Container(
-                                      padding: EdgeInsets.only(left: 6),
-                                      child: Text(initialAttendance[index].subjectName.toUpperCase(),style: TextStyle(fontWeight: FontWeight.normal,fontSize: 12),overflow: TextOverflow.ellipsis,)),
-                                ),
+
                                 Flexible(
                                   child: Container(
                                       padding: EdgeInsets.only(left: 6),
                                       child: Text(initialAttendance[index].course.toUpperCase(),style: TextStyle(fontWeight: FontWeight.normal,fontSize: 12),overflow: TextOverflow.ellipsis,)),
-                                ),
-                                Flexible(
 
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: CircleAvatar(
-                                      radius: 15,
-                                      backgroundColor: Colors.grey.shade300,
-                                      child: Icon(
-                                        Icons.arrow_forward,
-                                        color: Color(0xffffc909),
-                                      ),
-                                    ),
+                                  flex: 5,
+                                ),
+                                  Flexible(
+                                    child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: CircleAvatar(
+                                            radius: 15,
+                                            backgroundColor: Colors.grey.shade300,
+                                            child: Icon(
+                                              Icons.arrow_forward,
+                                              color: Color(0xffffc909),
+                                            ),
+                                          ),
+                                        ),
+                                    flex: 1,
                                   ),
-                                )
+
+
+
                               ],
                             )
                         ),
+
+
                         Container(
                             child: Row(
                               children: <Widget>[
@@ -171,6 +182,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                               ],
                             )
                         ),
+
 
                       ],
                     ),
@@ -211,7 +223,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "mon";
-                          callAttendanceApi(_day0);
+                          callAttendanceApi(_day0,userid);
                           setState(() {
 
 
@@ -245,7 +257,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "tue";
-                          callAttendanceApi(_day1);
+                          callAttendanceApi(_day1,userid);
 
                           setState(() {
                             _color1 = Colors.white;
@@ -276,7 +288,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "wed";
-                          callAttendanceApi(_day2);
+                          callAttendanceApi(_day2,userid);
 
                           setState(() {
                             _color1 = Colors.white;
@@ -307,7 +319,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "thu";
-                          callAttendanceApi(_day3);
+                          callAttendanceApi(_day3,userid);
 
                           setState(() {
                             _color1 = Colors.white;
@@ -339,7 +351,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "fri";
-                          callAttendanceApi(_day4);
+                          callAttendanceApi(_day4,userid);
 
                           setState(() {
                             _color1 = Colors.white;
@@ -369,7 +381,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                       child: GestureDetector(
                         onTap: (){
                           selectedday = "sat";
-                          callAttendanceApi(_day5);
+                          callAttendanceApi(_day5,userid);
 
                           setState(() {
                             _color1 = Colors.white;
@@ -406,7 +418,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
             child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: Center(
-                child: Text("${DateTime.now().toString()}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                child: Text("$dateHeader",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
               ),
             ),
           ),
@@ -441,13 +453,18 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
 
 
   }*/
-  Future<void> callAttendanceApi(DateTime dateTime) async {
+  Future<void> callAttendanceApi(DateTime dateTime, String uID) async {
+    print(dateTime);
+    final f3 = new DateFormat('dd MMMM yyyy');
+
+//    DateTime lovcation = DateTime(widget.date.toIso8601String());
+    dateHeader = f3.format(dateTime);
 
     Map abc = new Map();
 
     final f = new DateFormat('MM/dd/yyyy');
     String localDate = f.format(dateTime);
-    final uri = '${Constants.url}/scheduleList/faculty/?employeeId=$userId&date=$localDate';
+    final uri = '${Constants.url}/scheduleList/faculty/?employeeId=$uID&date=$localDate';
     print(uri);
     var response = await get(Uri.parse(uri),
     );
@@ -500,6 +517,9 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
 
   }
   getProfileData(DateTime dateTime) async {
+
+
+
     final SharedPreferences prefs = await _sprefs;
     username = prefs.getString("name") ?? 'No Data Found';
     picurl = prefs.getString("profile-picture") ?? 'name';
@@ -514,7 +534,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
       userid = userid;
       mobile = mobile;
     });
-    callAttendanceApi(dateTime);
+    callAttendanceApi(dateTime,userid);
 
   }
 

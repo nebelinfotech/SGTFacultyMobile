@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'Attendance.dart';
 import 'AttendanceTake.dart';
+import 'Constants.dart';
 
 class ShowAndTakeAttendancePage extends StatefulWidget {
   final String scheduleId;
@@ -32,13 +33,28 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
   String picurl;
   String userid;
   String newDate;
+  bool enableDiableSubmitButton = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
+    DateTime todayDate = DateTime.now().toUtc();
+    var d1 = DateTime.utc(todayDate.year,todayDate.month,todayDate.day);
+    DateTime selectedDate = DateTime.parse(widget.date).toUtc();
+    var d2 = DateTime.utc(selectedDate.year,selectedDate.month,selectedDate.day);
+
+    if(d1 == d2 || d2 == d1.subtract(new Duration(days: 1))){
+      enableDiableSubmitButton = true;
+      
+    }
+    else
+      {
+        enableDiableSubmitButton = false;
+      }
     getProfileData();
+
   }
 
   Color getColor(int selector) {
@@ -74,11 +90,14 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
                       children: <Widget>[
                         CircleAvatar(
                           backgroundImage: NetworkImage(
-                              "http://202.66.172.112:4242/sgterp/public/studentReg_images/181902007/Pic_SGT188207766.jpg"),
+                            "http://202.66.172.112:8080/sgterp/${initialAttendance[index].picUrl}",
+                          ),
                           radius: 30,
                           backgroundColor: Colors.transparent,
                         ),
-                        SizedBox(width: 10,),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -107,7 +126,8 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
                                             fontSize: 15),
                                         overflow: TextOverflow.ellipsis,
                                       )),
-                                ),Container(
+                                ),
+                                Container(
                                   child: Container(
                                       padding: EdgeInsets.only(left: 6),
                                       child: Text(
@@ -125,28 +145,27 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
                           ],
                         ),
                         Flexible(
-                            child: Align(alignment: Alignment.centerRight,
-                              child: Container(
-                          height: 50,
-                          width: 100,
-                          child: GestureDetector(
-                            onTap: (){
-                              if(getSwitchValue(index)=="assets/active.png"){
-                                initialAttendance[index].presentAbsent = "A";
-                              }else{
-                                initialAttendance[index].presentAbsent = "P";
-
-                              }
-                              setState(() {
-
-                              });
-                            },
-                            child: Image.asset(
+                            child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            height: 50,
+                            width: 100,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (getSwitchValue(index) ==
+                                    "assets/active.png") {
+                                  initialAttendance[index].presentAbsent = "A";
+                                } else {
+                                  initialAttendance[index].presentAbsent = "P";
+                                }
+                                setState(() {});
+                              },
+                              child: Image.asset(
                                 getSwitchValue(index),
+                              ),
                             ),
                           ),
-                        ),
-                            )),
+                        )),
                       ],
                     ),
                   ),
@@ -161,6 +180,104 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
       );
     }
 
+
+    Widget getSubmitButtontype(BuildContext context) {
+      if(enableDiableSubmitButton){
+        return  GestureDetector(
+          onTap: () {
+//              submitAttendance();
+            _submitAttendanceAlert(context);
+          },
+          child:
+
+
+          Container(
+            color: Color(0xff007ba4),
+            child: Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Card(
+                margin: EdgeInsets.all(0.0),
+                elevation: 16.0,
+                child: ClipPath(
+                  clipper: ShapeBorderClipper(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3))),
+                  child: Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            left:
+                            BorderSide(color: Color(0xffffc909), width: 5))),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Text(
+                          'Submit Attendance',
+                          style: TextStyle(
+                              color: Colors.indigo,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25),
+                        ),
+
+
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Color(0xffffc909),
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }else {
+        return
+          Container(
+            color: Color(0xff007ba4),
+            child: Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Card(
+                margin: EdgeInsets.all(0.0),
+                elevation: 16.0,
+                child: ClipPath(
+                  clipper: ShapeBorderClipper(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3))),
+                  child: Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            left:
+                            BorderSide(color: Color(0xffffc909), width: 5))),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Text(
+                          'Attendance Update Not Allowed',
+                          style: TextStyle(
+                              color: Colors.indigo,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+
+
+
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff007ba4),
@@ -168,37 +285,13 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
       ),
       body: Column(
         children: <Widget>[
-          Expanded(child: _myListView(context)),
-          SizedBox(height: 10,),
-          GestureDetector(
-            onTap: (){
-//              submitAttendance();
-              _submitAttendanceAlert(context);
-            },
-            child: Container(
-              height: 50,
-              color: Colors.grey.shade400,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Text('Submit Attendance',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.bold,fontSize: 25),),
-              CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
-              child: Icon(
-                Icons.arrow_forward,
-                color: Color(0xffffc909),
-              ),
-            )
-                ],
-              ),
-            ),
-          ),
-
-
-
+          Expanded(
+              child: Container(
+                  color: Color(0xff007ba4), child: _myListView(context))),
+         
+         getSubmitButtontype(context)
         ],
-         ),
+      ),
     );
     // Material(child: _myListView(context));
   }
@@ -218,14 +311,16 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
   }*/
   Future<void> callAttendanceApi() async {
     Map abc = new Map();
-    final f = new DateFormat('MM/dd//yyyy');
+    final f = new DateFormat('MM/dd/yyyy');
     final f2 = new DateFormat('dd MMMM yyyy');
 
 //    newDate = f2.format(date);
-    String localDate = f.format(DateTime.now());
+    print(widget.date);
+    String localDate = f.format(DateTime.parse((widget.date)));
     final uri =
-        'http://202.66.172.112:4242/sgterp/resources/attendanceList/faculty?scheduleId=${widget.scheduleId}&date=$localDate';
+        '${Constants.url}/attendanceList/faculty?scheduleId=${widget.scheduleId}&date=$localDate';
 //    var match = {"regNum": _phoneNumberController.text};
+    print(uri);
     var response = await get(
       Uri.parse(uri),
 //      headers: {
@@ -246,9 +341,8 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
             .map<AttendanceTake>((json) => AttendanceTake.fromJson(json))
             .toList();
 
-        print(initialAttendance.length);
+        print(initialAttendance);
       });
-
     } else {
       _ackAlert(context);
 
@@ -283,6 +377,7 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
       },
     );
   }
+
   Future<void> _submitAttendanceAlert(BuildContext context) {
     return showDialog<void>(
       context: context,
@@ -291,7 +386,10 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
           title: Text(
             'Do You Want to Submit the Attendance ?',
             style: TextStyle(
-                color: Colors.indigo, fontSize: 18, fontWeight: FontWeight.bold),textAlign: TextAlign.center,
+                color: Colors.indigo,
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
           ),
           content: Container(
             height: 35,
@@ -301,14 +399,21 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   FlatButton(
-                    child: Icon(Icons.cancel,color: Colors.red,),
+                    child: Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                   FlatButton(
-
-                    child: Icon(Icons.arrow_forward,color: Color(0xffffc909,),),
+                    child: Icon(
+                      Icons.arrow_forward,
+                      color: Color(
+                        0xffffc909,
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                       submitAttendance();
@@ -316,9 +421,8 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
                   ),
                 ],
               ),
-              ),
+            ),
           ),
-
         );
       },
     );
@@ -330,7 +434,7 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
     picurl = prefs.getString("profile-picture") ?? 'name';
     mobile = prefs.getString("mobile") ?? '91-XXXXXXXXXXX';
     picurl = picurl.replaceAll("\\\\", "");
-    picurl = "http://202.66.172.112:4242" + picurl;
+    picurl = "http://202.66.172.112:8080" + picurl;
     userid = prefs.getString("userId") ?? 'No Data Found';
 
     this.setState(() {
@@ -353,42 +457,41 @@ class _ShowAndTakeAttendancePage extends State<ShowAndTakeAttendancePage> {
     }
   }
 
-  Future<void>  submitAttendance() async {
+  Future<void> submitAttendance() async {
     Map abc = new Map();
-    final f = new DateFormat('MM/dd//yyyy');
+    final f = new DateFormat('MM/dd/yyyy');
     final f2 = new DateFormat('dd MMMM yyyy');
 
     List<String> sd = new List();
-    for(int i=0;i<initialAttendance.length;i++){
-      if(initialAttendance[i].presentAbsent == "A"){
+    for (int i = 0; i < initialAttendance.length; i++) {
+      if (initialAttendance[i].presentAbsent == "A") {
         sd.add(initialAttendance[i].regNum);
-
       }
     }
     String s = '';
     print(sd);
     s = sd.join(',');
 
-    String localDate = f.format(DateTime.now());
+    String localDate = f.format(DateTime.parse(widget.date));
     final uri =
-        'http://202.66.172.112:4242/sgterp/resources/markAttendance/faculty?scheduleId=${widget.scheduleId}&attendanceDate=$localDate&employeeId=admin&regNum=$s';
+        '${Constants.url}/markAttendance/faculty?scheduleId=${widget.scheduleId}&attendanceDate=$localDate&employeeId=$userid&regNum=$s';
 //    var match = {"regNum": _phoneNumberController.text};
-    var response = await post(
-      Uri.parse(uri)
-    );
+    print(uri);
+    var response = await post(Uri.parse(uri));
 
     print(response.body);
     abc = json.decode(response.body) as Map;
 
     if (!abc['error']) {
-
       Navigator.pop(context);
     } else {
       _ackAlert(context);
 
 //    ));
     }
-
   }
+
+  void _showNotAlloweddialog(BuildContext context) {}
+
 
 }

@@ -91,7 +91,7 @@ class _Dashboard2Page extends State<Dashboard2Page> {
                                   color: Color(0xffffc909), width: 5))),
                       child: ListTile(
                           onTap: () {
-                            Navigator.pushNamed(context, '/attendancePage');
+                            Navigator.pushNamed(context, '/lecturePage');
                           },
                           title: Text("Attendance"),
                           leading: Icon(
@@ -125,7 +125,12 @@ class _Dashboard2Page extends State<Dashboard2Page> {
                                   color: Color(0xffffc909), width: 5))),
                       child: ListTile(
                           onTap: () {
-                            Navigator.pushNamed(context, '/lecturePage');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LectureSchedulePage(),
+                              ),
+                            );
                           },
                           title: Text("Lectures"),
                           leading: Icon(
@@ -329,7 +334,7 @@ class _Dashboard2Page extends State<Dashboard2Page> {
     picurl = prefs.getString("profile-picture") ?? 'name';
     mobile = prefs.getString("mobile") ?? '91-XXXXXXXXXXX';
     picurl = picurl.replaceAll("\\\\", "");
-    picurl = "http://202.66.172.112:4242" + picurl;
+    picurl = "http://202.66.172.112:8080" + picurl;
     userid = prefs.getString("userId") ?? 'No Data Found';
 
     this.setState(() {

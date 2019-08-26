@@ -31,6 +31,7 @@ class _AttendancePage extends State<AttendancePage> {
   String userid;
   DateTime dateget;
   String newDate;
+  String headerDate;
 
   @override
   void initState() {
@@ -38,6 +39,12 @@ class _AttendancePage extends State<AttendancePage> {
     super.initState();
 
     getProfileData();
+    final f = new DateFormat('dd MMMM yyyy');
+    final f2 = new DateFormat('dd MMMM yyyy');
+
+//    DateTime lovcation = DateTime(widget.date.toIso8601String());
+     headerDate = f.format(widget.date);
+
 
 
 
@@ -65,7 +72,7 @@ class _AttendancePage extends State<AttendancePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ShowAndTakeAttendancePage(scheduleId: initialAttendance[index].scheduleId, date: newDate),
+                  builder: (context) => ShowAndTakeAttendancePage(scheduleId: initialAttendance[index].scheduleId, date: dateget.toString()),
                 ),
               );
             },
@@ -197,7 +204,7 @@ class _AttendancePage extends State<AttendancePage> {
             child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: Center(
-                child: Text('${widget.date}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                child: Text('$headerDate',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
               ),
             ),
           ),
@@ -320,6 +327,8 @@ class _AttendancePage extends State<AttendancePage> {
       userid = userid;
       mobile = mobile;
     });
+
+
     callAttendanceApi();
 
   }
