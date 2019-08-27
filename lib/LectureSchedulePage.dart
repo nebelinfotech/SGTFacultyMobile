@@ -190,9 +190,8 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                           children: <Widget>[
                             Flexible(
                               child: Container(
-                                  padding: EdgeInsets.only(left: 6),
                                   child: Text(
-                                    "SEMESTER | BATCH:",
+                                    "",
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 12),
@@ -200,21 +199,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
                                   )),
                             ),
                             Flexible(
-                              child: Container(
-                                  padding: EdgeInsets.only(left: 6),
-                                  child: Text(
-                                    initialAttendance[index]
-                                            .semester
-                                            .toUpperCase() +
-                                        ' | ' +
-                                        'BATCH '+initialAttendance[index]
-                                            .batch
-                                            .toUpperCase(),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
-                                    overflow: TextOverflow.ellipsis,
-                                  )),
+                              child: getBatch(initialAttendance[index])
                             ),
                           ],
                         )
@@ -558,7 +543,7 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
     picurl = prefs.getString("profile-picture") ?? 'name';
     mobile = prefs.getString("mobile") ?? '91-XXXXXXXXXXX';
     picurl = picurl.replaceAll("\\\\", "");
-    picurl = "http://202.66.172.112:4242" + picurl;
+    picurl = "http://202.66.172.112:8080" + picurl;
     userid = prefs.getString("userId") ?? 'No Data Found';
 
     this.setState(() {
@@ -569,4 +554,38 @@ class _LectureSchedulePage extends State<LectureSchedulePage> {
     });
     callAttendanceApi(dateTime, userid);
   }
+
+ Widget getBatch(AttendanceShow initialAttendance) {
+    if(initialAttendance.batch != null){
+      return Container(
+          padding: EdgeInsets.only(left: 6),
+          child: Text(
+            initialAttendance
+                .semester
+                .toUpperCase() +
+                ' | ' +
+                'BATCH '+initialAttendance
+                .batch
+                .toUpperCase(),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12),
+            overflow: TextOverflow.ellipsis,
+          )
+      );
+    }else {
+      return Container(
+          padding: EdgeInsets.only(left: 6),
+          child: Text(
+            initialAttendance
+                .semester
+                .toUpperCase() ,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12),
+            overflow: TextOverflow.ellipsis,
+          )
+      );
+    }
+ }
 }

@@ -160,22 +160,7 @@ class _AttendancePage extends State<AttendancePage> {
                                      Row(
                                       children: <Widget>[
                                         Flexible(
-                                          child: Container(
-                                              padding: EdgeInsets.only(left: 6),
-                                              child: Text(
-                                                initialAttendance[index]
-                                                        .semester
-                                                        .toUpperCase() +
-                                                    ' | ' +
-                                                    'BATCH ' +
-                                                    initialAttendance[index]
-                                                        .batch
-                                                        .toUpperCase(),
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 12),
-                                                overflow: TextOverflow.ellipsis,
-                                              )),
+                                          child: getBatch(initialAttendance[index])
                                         ),
                                       ],
                                     )
@@ -367,7 +352,7 @@ class _AttendancePage extends State<AttendancePage> {
     picurl = prefs.getString("profile-picture") ?? 'name';
     mobile = prefs.getString("mobile") ?? '91-XXXXXXXXXXX';
     picurl = picurl.replaceAll("\\\\", "");
-    picurl = "http://202.66.172.112:4242" + picurl;
+    picurl = "http://202.66.172.112:8080" + picurl;
     userid = prefs.getString("userId") ?? 'No Data Found';
 
     this.setState(() {
@@ -378,5 +363,39 @@ class _AttendancePage extends State<AttendancePage> {
     });
 
     callAttendanceApi();
+  }
+
+  Widget getBatch(AttendanceShow initialAttendance) {
+    if(initialAttendance.batch != null){
+      return Container(
+          padding: EdgeInsets.only(left: 6),
+          child: Text(
+            initialAttendance
+                .semester
+                .toUpperCase() +
+                ' | ' +
+                'BATCH '+initialAttendance
+                .batch
+                .toUpperCase(),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12),
+            overflow: TextOverflow.ellipsis,
+          )
+      );
+    }else {
+      return Container(
+          padding: EdgeInsets.only(left: 6),
+          child: Text(
+            initialAttendance
+                .semester
+                .toUpperCase() ,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12),
+            overflow: TextOverflow.ellipsis,
+          )
+      );
+    }
   }
 }
